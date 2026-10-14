@@ -110,11 +110,11 @@ function unirConceptos(box,PAIRSX){
 
 
 
-function cronometro(slide){
+function cronometro(slide,min){
   var w=document.createElement('div'); w.className='sw';
   w.innerHTML='<div class="swc"><svg viewBox="0 0 24 24" width="64" height="64" aria-label="Lápiz" role="img" fill="none" stroke="#13233a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4.2L16.6 4.2a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.2 19 4 20z"/><path d="M14.6 6.2l3.2 3.2"/><path d="M4 20l1-4.2 3.2 3.2L4 20z"/></svg></div><div class="swr"><input class="swt" type="text" value="05:00" inputmode="numeric" aria-label="Tiempo del temporizador (escribe minutos o mm:ss)" maxlength="6"><button class="swb" aria-label="Iniciar o pausar el temporizador">▶</button></div>';
   slide.appendChild(w);
-  var inp=w.querySelector('.swt'), go=w.querySelector('.swb'), setMs=300000, left=setMs, run=false, last=0, iv=null, ac=null;
+  var inp=w.querySelector('.swt'), go=w.querySelector('.swb'), setMs=(min||5)*60000, left=setMs, run=false, last=0, iv=null, ac=null;
   function fmt(ms){ var s=Math.ceil(ms/1000), m=Math.floor(s/60); return (m<10?'0':'')+m+':'+((s%60)<10?'0':'')+(s%60); }
   function parse(v){ v=String(v).trim().replace(',','.'); if(!v) return null; var m=v.match(/^(\d{1,3}):([0-5]?\d)$/); if(m) return (+m[1]*60+ +m[2])*1000; if(/^\d+(\.\d+)?$/.test(v)) return Math.round(parseFloat(v)*60000); return null; }
   function beep(){ try{ ac=ac||new (window.AudioContext||window.webkitAudioContext)(); [0,.35,.7].forEach(function(t){ var o=ac.createOscillator(),g=ac.createGain(); o.frequency.value=880; g.gain.value=.2; o.connect(g); g.connect(ac.destination); o.start(ac.currentTime+t); o.stop(ac.currentTime+t+.22); }); }catch(e){} }
@@ -152,14 +152,14 @@ function presentacion(box,SLIDES,CFG){
   function unmount(){ mounts.forEach(function(f){ try{ f(); }catch(e){} }); mounts=[]; }
   function show(n){
     unmount(); idx=Math.max(0,Math.min(N-1,n)); var s=SLIDES[idx]; stage.hidden=!!s.sim; simBox.hidden=!s.sim; simBox.innerHTML='';
-    if(s.sim){ mounts.push(CFG.sim(simBox)); count.textContent=(idx+1)+' / '+N; notes.textContent=s.notes||''; box.querySelector('[data-a=prev]').disabled=idx===0; box.querySelector('[data-a=next]').disabled=idx===N-1; return; }
+    if(s.sim){ mounts.push(CFG.sim(simBox,s)); count.textContent=(idx+1)+' / '+N; notes.textContent=s.notes||''; box.querySelector('[data-a=prev]').disabled=idx===0; box.querySelector('[data-a=next]').disabled=idx===N-1; return; }
     slide.setAttribute('style',s.style+';position:relative;width:1920px;height:1080px;transform-origin:0 0;box-sizing:border-box;overflow:hidden'); slide.innerHTML=s.html;
     slide.querySelectorAll('.cubo').forEach(function(d){ var svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 800 440'); svg.setAttribute('style','width:100%;height:100%;display:block'); d.appendChild(svg); mounts.push(cuboAnim(svg,d.getAttribute('data-mode'))); });
     slide.querySelectorAll('.atomo').forEach(function(d){ mounts.push(lineaTiempoAtomica(d,{compact:true,only:[d.getAttribute('data-model')],el:d.getAttribute('data-el')||'Li',neutrons:true})); });
     slide.querySelectorAll('.fecha').forEach(montarFecha);
     slide.querySelectorAll('.hist').forEach(function(d){ mounts.push(historiaAtomismo(d)); });
     var u=slide.querySelector('.unir'); if(u) unirConceptos(u,CFG.pairs);
-    if(s.timer) mounts.push(cronometro(slide));
+    if(s.timer) mounts.push(cronometro(slide,typeof s.timer==='number'?s.timer:5));
     count.textContent=(idx+1)+' / '+N; notes.textContent=s.notes||'Sin notas para esta diapositiva.'; fit();
     box.querySelector('[data-a=prev]').disabled=idx===0; box.querySelector('[data-a=next]').disabled=idx===N-1;
   }

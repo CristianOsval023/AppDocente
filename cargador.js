@@ -17,7 +17,21 @@ var ARCHIVO_DE={
  "thomsonExperimento": "sim-thomson.js",
  "bohrExperimento": "sim-bohr.js",
  "dobleRendija": "sim-doble-rendija.js",
- "barreraPrimaria": "sim-barrera-primaria.js"
+ "barreraPrimaria": "sim-barrera-primaria.js",
+ "c5Temperatura": "sim-c5-temperatura.js",
+ "c5HistDemocrito": "sim-c5-democrito.js",
+ "c5SimDemocrito": "sim-c5-democrito.js",
+ "c5HistDalton": "sim-c5-dalton.js",
+ "c5SimDalton": "sim-c5-dalton.js",
+ "c5HistThomson": "sim-c5-thomson.js",
+ "c5SimThomson": "sim-c5-thomson.js",
+ "c5HistRutherford": "sim-c5-rutherford.js",
+ "c5SimRutherford": "sim-c5-rutherford.js",
+ "c5HistBohr": "sim-c5-bohr.js",
+ "c5SimBohr": "sim-c5-bohr.js",
+ "c5HistCuantico": "sim-c5-cuantico.js",
+ "c5SimCuantico": "sim-c5-cuantico.js",
+ "presentacionClase5": "clase-5-modelos-atomicos.js"
 };
 var DEPENDENCIAS={
  "sim-temperatura.js": [
@@ -60,6 +74,31 @@ var DEPENDENCIAS={
  ],
  "sim-doble-rendija.js": [
   "atomo-comun.js"
+ ],
+ "sim-c5-bohr.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-cuantico.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-dalton.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-democrito.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-rutherford.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-temperatura.js": [
+  "historia-comun.js"
+ ],
+ "sim-c5-thomson.js": [
+  "historia-comun.js"
+ ],
+ "clase-5-modelos-atomicos.js": [
+  "presentacion.js",
+  "historia-comun.js"
  ]
 };
 var _scripts={};
